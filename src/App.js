@@ -4,6 +4,10 @@ import Home from "./components/Home";
 import Products from "./components/Products";
 import Header from "./components/layout/Header";
 import ProductsDetails from "./components/ProductsDetails";
+import SignIn from "./components/SignIn";
+import Orders from "./components/Orders";
+import Prime from "./components/Prime";
+import Basket from "./components/Basket";
 
 const App = () => {
   return (
@@ -23,7 +27,20 @@ const App = () => {
         <Route path="/products/:id">
           <ProductsDetails/>
         </Route>
+        <Route path="/signin">
+          <SignIn/>
+        </Route>
+        <Route path="/orders">
+          <Orders/>
+        </Route>
+        <Route path="/prime">
+          <Prime/>
+        </Route>
+        <Route path="/basket">
+          <Basket/>
+        </Route>
         </Switch>
+        
         
       </main>
     </div>
