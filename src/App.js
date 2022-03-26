@@ -8,6 +8,7 @@ import SignIn from "./components/SignIn";
 import Orders from "./components/Orders";
 import Prime from "./components/Prime";
 import Basket from "./components/Basket";
+import NotFound from "./components/NotFound";
 
 const App = () => {
   return (
@@ -38,6 +39,9 @@ const App = () => {
         </Route>
         <Route path="/basket">
           <Basket/>
+        </Route>
+        <Route path="*">
+          <NotFound/>
         </Route>
         </Switch>
         
