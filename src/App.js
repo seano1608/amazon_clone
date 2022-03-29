@@ -12,7 +12,7 @@ import NotFound from "./components/NotFound";
 
 const App = () => {
   return (
-    <div>
+    <>
       <Header />
       <main>
         <Switch>
@@ -47,7 +47,7 @@ const App = () => {
         
         
       </main>
-    </div>
+    </>
   );
 };
 
