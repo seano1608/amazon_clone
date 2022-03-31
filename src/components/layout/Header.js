@@ -7,7 +7,6 @@ import { useContext } from "react";
 import AuthContext from "../../context/authContext";
 
 const Header = () => {
-
   const ctx = useContext(AuthContext);
   return (
     <header className="header">
@@ -23,7 +22,6 @@ const Header = () => {
         <SearchIcon className="search_icon" />
       </div>
       <div className="header_nav">
-
         {ctx.isLoggedIn ? (
           <Link to="/">
             <div className="header_option" onClick={ctx.onLogout}>

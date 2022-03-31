@@ -1,37 +1,34 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./SignIn.css";
-
+import AuthContext from "../context/authContext";
 
 //Reducer declaration
 const reducer = (state, action) => {
-  if(action.type === "EMAIL_INPUT"){
-    return {...state, emailValue: action.payload};
+  if (action.type === "EMAIL_INPUT") {
+    return { ...state, emailValue: action.payload };
   }
 
-  if(action.type === "PASS_INPUT"){
-    return {...state, passwordValue: action.payload};
+  if (action.type === "PASS_INPUT") {
+    return { ...state, passwordValue: action.payload };
   }
-}
+};
 
-const SignIn = ({onLogin}) => {
-  
+const SignIn = () => {
+  const ctx = useContext(AuthContext);
   const [formIsValid, setFormIsValid] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     emailValue: "",
-    passwordValue: ""
-  })
+    passwordValue: "",
+  });
   //Destructured email & password
   const { emailValue: email, passwordValue: password } = state;
 
-
   //Form validation
-  useEffect(() =>{
-    const identifier = setTimeout(() =>{
+  useEffect(() => {
+    const identifier = setTimeout(() => {
       console.log("Checking form validity");
-      setFormIsValid(
-        email.includes("@") && password.trim().length > 6
-      );
+      setFormIsValid(email.includes("@") && password.trim().length > 6);
     }, 500);
     return () => {
       console.log("Cleanup here");
@@ -39,24 +36,21 @@ const SignIn = ({onLogin}) => {
     };
   }, [email, password]);
 
-
-
   const emailChangeHandler = (e) => {
     dispatch({ type: "EMAIL_INPUT", payload: e.target.value });
-  }
+  };
 
   const passwordChangeHandler = (e) => {
-   dispatch({ type: "PASS_INPUT", payload: e.target.value });
-  }
+    dispatch({ type: "PASS_INPUT", payload: e.target.value });
+  };
 
   //Sign-in/Login form details
   const Login = (e) => {
     e.preventDefault();
     console.log(formIsValid);
     console.log("Email: ", email, "Password: ", password);
-    onLogin(email, password);
+    ctx.onLogin(email, password);
   };
-
 
   return (
     <div className="login">
@@ -73,7 +67,11 @@ const SignIn = ({onLogin}) => {
           <h5>Email</h5>
           <input type="text" value={email} onChange={emailChangeHandler} />
           <h5>Password</h5>
-          <input type="password" value={password} onChange={passwordChangeHandler} />
+          <input
+            type="password"
+            value={password}
+            onChange={passwordChangeHandler}
+          />
           <button type="submit" className="signIn_button" onClick={Login}>
             Sign In
           </button>
