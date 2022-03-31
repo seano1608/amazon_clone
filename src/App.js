@@ -9,11 +9,36 @@ import Orders from "./components/Orders";
 import Prime from "./components/Prime";
 import Basket from "./components/Basket";
 import NotFound from "./components/NotFound";
+import { useState } from "react";
+import { useEffect } from "react";
+import AuthContext from "./context/authContext";
+
 
 const App = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem("isLoggedIn");
+
+    if(userInfo === "1"){
+      setIsLoggedIn(true);
+    }
+  }, [])
+
+  const logInHandler = (email, password) => {
+    localStorage.setItem("isLoggedIn", "1");
+    setIsLoggedIn(true);
+  }
+
+  const logOutHandler = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+  }
+
   return (
-    <>
-      <Header />
+    <AuthContext.Provider value={{isLoggedIn: isLoggedIn, onLogout: logOutHandler}}>
+      <Header onLogout={logOutHandler}/>
       <main>
         <Switch>
           <Route path="/" exact>
@@ -29,7 +54,7 @@ const App = () => {
           <ProductsDetails/>
         </Route>
         <Route path="/signin">
-          <SignIn/>
+          <SignIn onLogin={logInHandler}/>
         </Route>
         <Route path="/orders">
           <Orders/>
@@ -47,7 +72,7 @@ const App = () => {
         
         
       </main>
-    </>
+    </AuthContext.Provider>
   );
 };
 

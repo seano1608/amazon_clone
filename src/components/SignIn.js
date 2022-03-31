@@ -1,40 +1,60 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
 import "./SignIn.css";
 
-const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+//Reducer declaration
+const reducer = (state, action) => {
+  if(action.type === "EMAIL_INPUT"){
+    return {...state, emailValue: action.payload};
+  }
+
+  if(action.type === "PASS_INPUT"){
+    return {...state, passwordValue: action.payload};
+  }
+}
+
+const SignIn = ({onLogin}) => {
+  
   const [formIsValid, setFormIsValid] = useState(false);
+  const [state, dispatch] = useReducer(reducer, {
+    emailValue: "",
+    passwordValue: ""
+  })
+  //Destructured email & password
+  const { emailValue: email, passwordValue: password } = state;
 
-  useEffect(() => {
-    console.log("effect running");
-  }, []);
 
-  useEffect(() => {
-    const identifier = setTimeout(() => {
+  //Form validation
+  useEffect(() =>{
+    const identifier = setTimeout(() =>{
       console.log("Checking form validity");
-      setFormIsValid(email.includes("@") && password.trim().length > 6);
+      setFormIsValid(
+        email.includes("@") && password.trim().length > 6
+      );
     }, 500);
-
     return () => {
-      console.log("cleanup function before next use effect");
+      console.log("Cleanup here");
       clearTimeout(identifier);
     };
   }, [email, password]);
 
+
+
   const emailChangeHandler = (e) => {
-    setEmail(e.target.value);
+    dispatch({ type: "EMAIL_INPUT", payload: e.target.value });
   }
 
   const passwordChangeHandler = (e) => {
-    setPassword(e.target.value);
+   dispatch({ type: "PASS_INPUT", payload: e.target.value });
   }
 
   //Sign-in/Login form details
   const Login = (e) => {
     e.preventDefault();
     console.log(formIsValid);
+    console.log("Email: ", email, "Password: ", password);
+    onLogin(email, password);
   };
 
 
