@@ -17,6 +17,13 @@ export const ShoppingState = (props) => {
     });
   };
 
+  const setUser = (user) => {
+    dispatch({
+      type: "SET_USER",
+      payload: user,
+    });
+  };
+
   return (
     <ShoppingContext.Provider
       value={{
@@ -24,6 +31,7 @@ export const ShoppingState = (props) => {
         user: state.user,
         getBasketTotal,
         addToBasket,
+        setUser,
       }}
     >
       {props.children}

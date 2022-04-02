@@ -10,10 +10,25 @@ import Prime from "./components/Prime";
 import Basket from "./components/Basket";
 import NotFound from "./components/NotFound";
 import { useState } from "react";
-import { useEffect } from "react";
-import AuthContext from "./context/authContext";
+import { useEffect, useContext } from "react";
+import ShoppingContext from "./context/shopping/shoppingContext";
+import { auth } from "./firebase";
 
 const App = () => {
+
+  const shoppingContext = useContext(ShoppingContext);
+  const { setUser } = shoppingContext;
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      console.log("User is ->", authUser);
+
+      if(authUser){
+        setUser(authUser);
+      } else {
+        setUser(null);
+      }
+    })
+  }, [])
   return (
     <>
       <Header />
