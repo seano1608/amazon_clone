@@ -3,11 +3,18 @@ import { Link } from "react-router-dom";
 import "./Header.css";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import ShoppingContext from "../../context/shopping/shoppingContext";
 import { useContext } from "react";
 import AuthContext from "../../context/authContext";
 
 const Header = () => {
+  //Contexts
+  const shoppingContext = useContext(ShoppingContext);
+  const { basket } = shoppingContext;
+
   const ctx = useContext(AuthContext);
+
+
   return (
     <header className="header">
       <Link to="/home">
@@ -53,7 +60,7 @@ const Header = () => {
         <Link to="/basket">
           <div className="header_optionBasket">
             <ShoppingBasketIcon />
-            <span className="header_optionTwo header_basketCount">0</span>
+            <span className="header_optionTwo header_basketCount">{basket?.length}</span>
           </div>
         </Link>
       </div>
