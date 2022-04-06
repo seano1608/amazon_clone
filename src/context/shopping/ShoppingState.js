@@ -8,8 +8,9 @@ export const ShoppingState = (props) => {
 
   //Selectors
   const getBasketTotal = (basket) => {
-    basket?.reducer((amount, item) => item.price + amount, 0);
+    basket?.reduce((amount, item) => item.price + amount, 0);
   };
+  
   const addToBasket = async (item) => {
     dispatch({
       type: "ADD_TO_BASKET",
@@ -24,6 +25,20 @@ export const ShoppingState = (props) => {
     });
   };
 
+  const removeFromBasket = (item) => {
+    dispatch({
+      type: "REMOVE_FROM_BASKET",
+      payload: item,
+    })
+  }
+
+  const emptyBasket = (item) => {
+    dispatch({
+      type: "EMPTY_BASKET",
+      payload: item,
+    })
+  }
+
   return (
     <ShoppingContext.Provider
       value={{
@@ -32,6 +47,8 @@ export const ShoppingState = (props) => {
         getBasketTotal,
         addToBasket,
         setUser,
+        removeFromBasket,
+        emptyBasket,
       }}
     >
       {props.children}
