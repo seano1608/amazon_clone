@@ -1,5 +1,7 @@
 import "./App.css";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import Home from "./components/Home";
 import Products from "./components/Products";
 import Header from "./components/layout/Header";
@@ -16,21 +18,24 @@ import { auth } from "./firebase";
 import Checkout from "./components/Checkout";
 import Payment from "./components/Payment";
 
-const App = () => {
+const promise = loadStripe(
+  "pk_test_51HKawPFuQpMTR1i87nXZqCo1I3bQRxAgojMbuDIGpjcuqKugb7u0lSOABsqWqulDNdhjKj2D4p2wawf30lU3p2tm003xhxTeNU"
+);
 
+const App = () => {
   const shoppingContext = useContext(ShoppingContext);
   const { setUser } = shoppingContext;
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
       console.log("User is ->", authUser);
 
-      if(authUser){
+      if (authUser) {
         setUser(authUser);
       } else {
         setUser(null);
       }
-    })
-  }, [])
+    });
+  }, []);
   return (
     <>
       <Header />
@@ -64,7 +69,9 @@ const App = () => {
             <Checkout />
           </Route>
           <Route path="/payment">
-            <Payment />
+            <Elements stripe={promise}>
+              <Payment />
+            </Elements>
           </Route>
           <Route path="*">
             <NotFound />
